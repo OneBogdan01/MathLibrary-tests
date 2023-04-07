@@ -1,5 +1,5 @@
 #include "pch.h"
-#include  "CorePhysics.hpp"
+#include  "./src/CorePhysics.hpp"
 
 TEST(DotProduct, vec2d)
 {

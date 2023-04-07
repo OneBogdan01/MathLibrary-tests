@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+MathLibrary.sln
+MathLibrary.vcxproj
+packages.config
+pch.cpp
+pch.h
+test.cpp

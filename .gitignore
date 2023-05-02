@@ -365,3 +365,4 @@ MathLibrary.sln
 MathLibrary.vcxproj
 packages.config
 
+/build

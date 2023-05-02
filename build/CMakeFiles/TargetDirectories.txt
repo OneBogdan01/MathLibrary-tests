@@ -1,4 +1,0 @@
-D:/GameProjects/C++ learning/Math/MathLibrary/build/CMakeFiles/g_test.dir
-D:/GameProjects/C++ learning/Math/MathLibrary/build/CMakeFiles/math_tests.dir
-D:/GameProjects/C++ learning/Math/MathLibrary/build/CMakeFiles/ALL_BUILD.dir
-D:/GameProjects/C++ learning/Math/MathLibrary/build/CMakeFiles/ZERO_CHECK.dir

@@ -364,6 +364,4 @@ FodyWeavers.xsd
 MathLibrary.sln
 MathLibrary.vcxproj
 packages.config
-pch.cpp
-pch.h
-test.cpp
+

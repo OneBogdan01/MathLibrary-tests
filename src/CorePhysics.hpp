@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 struct vec2
 {
 	float x, y;

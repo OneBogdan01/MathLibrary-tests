@@ -366,3 +366,4 @@ MathLibrary.vcxproj
 packages.config
 
 /build
+.vscode/settings.json

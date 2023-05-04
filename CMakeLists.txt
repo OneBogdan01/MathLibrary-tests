@@ -23,11 +23,15 @@ FetchContent_MakeAvailable(googletest)
 set( INC_FILES
     pch.h
 	src/CorePhysics.hpp
+    src/Transform.hpp
+    src/MathFunctions.hpp
 )
 
 set( SRC_FILES 
     pch.cpp
 	test.cpp
+    src/Transform.cpp
+    src/MathFunctions.cpp
 )
 
 add_executable( math_tests ${INC_FILES} ${SRC_FILES} )

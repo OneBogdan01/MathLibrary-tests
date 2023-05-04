@@ -3,12 +3,12 @@
 class Transform
 {
 private:
-    vec3 *parent;
-    vec3 position;
+	vec3* parent;
+	vec3 position;
 public:
-    Transform(vec3 &parent,vec3 pos={0,0,0});
-    Transform();
-    ~Transform();
+	explicit Transform(vec3& parent, vec3 pos = { 0,0,0 });
+	Transform();
+	~Transform();
 
-    const vec3 GetParentPosition();
+	const vec3 GetParentPosition() const;
 };

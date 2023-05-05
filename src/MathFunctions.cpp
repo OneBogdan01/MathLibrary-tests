@@ -1,5 +1,5 @@
 #include "MathFunctions.hpp"
-
+#include <cfloat>
 #include <algorithm>
 
 bool MathFunctions::areEqualRel(float a, float b)

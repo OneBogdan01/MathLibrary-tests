@@ -25,6 +25,7 @@ set( INC_FILES
 	src/CorePhysics.hpp
     src/Transform.hpp
     src/MathFunctions.hpp
+    src/World.hpp
 )
 
 set( SRC_FILES 
@@ -32,6 +33,7 @@ set( SRC_FILES
 	test.cpp
     src/Transform.cpp
     src/MathFunctions.cpp
+    src/World.cpp
 )
 
 add_executable( math_tests ${INC_FILES} ${SRC_FILES} )

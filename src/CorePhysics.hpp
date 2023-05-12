@@ -33,7 +33,7 @@ struct vec3
 	vec3 operator +(const vec3& a) const { return vec3{ x + a.x, y + a.y, z + a.z }; }
 	vec3 operator -(const vec3& a) const { return vec3{ x - a.x, y - a.y, z - a.z }; }
 	vec3 operator *(const float a) const { return vec3{ x * a, y * a, z * a }; }
-	bool operator ==(const vec3& a) const {return MathFunctions::areEqualRel(x,a.x) &&MathFunctions::areEqualRel(y,a.y)&&MathFunctions::areEqualRel(z,a.z);}
+	bool operator ==(const vec3& a) const { return MathFunctions::areEqualRel(x, a.x) && MathFunctions::areEqualRel(y, a.y) && MathFunctions::areEqualRel(z, a.z); }
 	float dot(const vec3& a)const { return x * a.x + y * a.y + z * a.z; }
 	vec3 cross(const vec3& a) { return vec3{ y * a.z - z * a.y, z * a.x - x * a.z, y * a.z - z * a.y }; }
 	float magnitude() { return sqrt(x * x + y * y + z * z); }
@@ -50,4 +50,9 @@ struct vec3
 		y = y * m;
 		z = z * m;
 	}
+};
+
+struct mat2
+{
+	float cell[4];
 };

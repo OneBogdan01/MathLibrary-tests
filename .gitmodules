@@ -1,0 +1,3 @@
+[submodule "MathLibrary"]
+	path = MathLibrary
+	url = https://github.com/OneBogdan01/MathLibrary.git

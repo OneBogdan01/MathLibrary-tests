@@ -27,8 +27,14 @@ TEST(LinearAlgebra, matrices)
 {
 	mat3x3 m;
 	m.m[0][0] = 10;
-	vec3 a = { 1,2.5f,1 };
-	mat3x3::rowVectorMultiplication(m, a);
-	ASSERT_EQ(a, vec3(10, 2.5f, 1));
+	m.m[0][1] = 25;
+	mat3x3 transpose_m;
+	transpose_m.m[0][0] = 10;
+	transpose_m.m[1][0] = 25;
+	/*vec3 a = { 1,2.5f,1 };
+	mat3x3::rowVectorMultiplication(m, a);*/
+
+	mat3x3::transpose(m);
+	ASSERT_EQ(transpose_m, m);
 
 }

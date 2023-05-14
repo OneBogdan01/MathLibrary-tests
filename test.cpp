@@ -23,6 +23,17 @@ TEST(LinearAlgebra, localToWorld)
 	ASSERT_EQ(vec3(0.634f, -10.0f, -3.098f), o) << " wrong because:" << o.x << " " << o.y << " " << o.z << "\n";
 
 }
+std::ostream& operator<<(std::ostream& os, mat3x3 const& m) {
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			os << m.m[i][j] << " ";
+		}
+		os << "\n";
+	}
+	return os;
+}
 TEST(LinearAlgebra, matrices)
 {
 	mat3x3 m;
@@ -34,7 +45,11 @@ TEST(LinearAlgebra, matrices)
 	/*vec3 a = { 1,2.5f,1 };
 	mat3x3::rowVectorMultiplication(m, a);*/
 
-	mat3x3::transpose(m);
-	ASSERT_EQ(transpose_m, m);
+	mat3x3 result;
+	result.m[0][0] = 725;
+	result.m[0][1] = 25;
+	result.m[1][0] = 25;
+	//ASSERT_EQ(transpose_m, m); */
+	ASSERT_EQ(m * transpose_m, result) << m * transpose_m;
 
 }

@@ -5,6 +5,8 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 project(MathLibrary VERSION 1.0 DESCRIPTION "My C++ Math library" LANGUAGES CXX)
 
+#adding the library
+add_subdirectory( MathLibrary )
 #Enable testing
 enable_testing()
 
@@ -39,6 +41,8 @@ set( SRC_FILES
 add_executable( math_tests ${INC_FILES} ${SRC_FILES} )
 target_link_libraries( math_tests PUBLIC gtest gtest_main )
 gtest_discover_tests( math_tests )
+target_link_libraries( math_tests PUBLIC MathLibrary )
+
 
 set_target_properties(
     gmock

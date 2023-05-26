@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "./MathLibrary/Transform.hpp"
-#include "./MathLibrary/World.hpp"
+#include "Transform.hpp"
+#include "World.hpp"
 TEST(LinearAlgebra, vec2d)
 {
 	vec2 a{ 0,0 };

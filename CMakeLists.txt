@@ -24,18 +24,11 @@ FetchContent_MakeAvailable(googletest)
 
 set( INC_FILES
     pch.h
-	MathLibrary/CorePhysics.hpp
-    MathLibrary/Transform.hpp
-    MathLibrary/MathFunctions.hpp
-    MathLibrary/World.hpp
 )
 
 set( SRC_FILES 
     pch.cpp
 	test.cpp
-    MathLibrary/Transform.cpp
-    MathLibrary/MathFunctions.cpp
-    MathLibrary/World.cpp
 )
 
 add_executable( math_tests ${INC_FILES} ${SRC_FILES} )

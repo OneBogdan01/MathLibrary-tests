@@ -23,10 +23,27 @@ TEST(LinearAlgebra, localToWorld)
 	ASSERT_EQ(vec3(0.634f, -10.0f, -3.098f), o) << " wrong because:" << o.x << " " << o.y << " " << o.z << "\n";
 
 }
+//displays to cout the insides of 3x3 matrix
 std::ostream& operator<<(std::ostream& os, mat3x3 const& m) {
 	for (int i = 0; i < 3; i++)
 	{
+		os << "\n";
+
 		for (int j = 0; j < 3; j++)
+		{
+			os << m.m[i][j] << " ";
+		}
+		os << "\n";
+	}
+	return os;
+}
+//displays to cout the insides of 3x3 matrix
+std::ostream& operator<<(std::ostream& os, mat2x2 const& m) {
+	for (int i = 0; i < 2; i++)
+	{
+		os << "\n";
+
+		for (int j = 0; j < 2; j++)
 		{
 			os << m.m[i][j] << " ";
 		}
@@ -51,5 +68,63 @@ TEST(LinearAlgebra, matrices)
 	result.m[1][0] = 25;
 	//ASSERT_EQ(transpose_m, m); */
 	ASSERT_EQ(m * transpose_m, result) << m * transpose_m;
+
+}
+TEST(LinearAlgebra, 2DRotation)
+{
+	mat2x2 currentR;
+	mat2x2 r;
+	mat2x2 rotated;
+	const float angleToRotate = PI / 2.0f;
+	rotated.m[0][0] = cos(angleToRotate);
+	rotated.m[0][1] = sin(angleToRotate);
+	rotated.m[1][0] = -sin(angleToRotate);
+	rotated.m[1][1] = cos(angleToRotate);
+
+	mat2x2::Rotate2D(angleToRotate, r);
+
+	ASSERT_EQ(currentR * r, rotated) << r;
+
+}
+TEST(LinearAlgebra, 3DRotation)
+{
+	const mat3x3 currentR;
+	mat3x3 r;
+	mat3x3 rotated;
+	const float angleToRotate = -15 * PI / 180;
+	//some magic rotation answer from here: https://gamemath.com/book/answers.html#matrixtransforms
+	//to int for easier comparison
+	rotated.m[0][0] = 968;
+	rotated.m[0][1] = -212;
+	rotated.m[0][2] = -131;
+
+	rotated.m[1][0] = 203;
+	rotated.m[1][1] = 976;
+	rotated.m[1][2] = -84;
+
+	rotated.m[2][0] = 146;
+	rotated.m[2][1] = 54;
+	rotated.m[2][2] = 988;
+
+
+	mat3x3::Rotate3D(angleToRotate, vec3(0.267f, -0.535f, 0.802f), r);
+
+	ASSERT_EQ(mat3x3::RoundToInt(currentR * r), rotated) << r;
+
+}
+TEST(LinearAlgebra, 2DScaling) //todo
+{
+	mat2x2 currentR;
+	mat2x2 r;
+	mat2x2 rotated;
+	const float angleToRotate = PI / 2;
+	rotated.m[0][0] = cos(angleToRotate);
+	rotated.m[0][1] = sin(angleToRotate);
+	rotated.m[1][0] = -sin(angleToRotate);
+	rotated.m[1][1] = cos(angleToRotate);
+
+	mat2x2::Rotate2D(angleToRotate, r);
+
+	ASSERT_EQ(currentR * r, rotated) << r;
 
 }

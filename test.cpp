@@ -112,19 +112,39 @@ TEST(LinearAlgebra, 3DRotation)
 	ASSERT_EQ(mat3x3::RoundToInt(currentR * r), rotated) << r;
 
 }
-TEST(LinearAlgebra, 2DScaling) //todo
+TEST(LinearAlgebra, 3DUniformScaling)
 {
-	mat2x2 currentR;
-	mat2x2 r;
-	mat2x2 rotated;
-	const float angleToRotate = PI / 2;
-	rotated.m[0][0] = cos(angleToRotate);
-	rotated.m[0][1] = sin(angleToRotate);
-	rotated.m[1][0] = -sin(angleToRotate);
-	rotated.m[1][1] = cos(angleToRotate);
-
-	mat2x2::Rotate2D(angleToRotate, r);
-
+	mat3x3 currentR;
+	mat3x3 rotated;
+	rotated.m[0][0] = 2;
+	rotated.m[1][1] = 2;
+	rotated.m[2][2] = 2;
+	mat3x3 r;
+	r.m[0][1] = -1;
+	mat3x3::Scale(r, 2);
 	ASSERT_EQ(currentR * r, rotated) << r;
+
+}
+TEST(LinearAlgebra, 3DScalingAroundAxis)
+{
+	mat3x3 currentR;
+	mat3x3 rotated;
+	rotated.m[0][0] = 1.285f;
+	rotated.m[0][1] = -0.571f;
+	rotated.m[0][2] = 0.857f;
+
+	rotated.m[1][0] = -0.571f;
+	rotated.m[1][1] = 2.145f;
+	rotated.m[1][2] = -1.716f;
+
+	rotated.m[2][0] = 0.857f;
+	rotated.m[2][1] = -1.716f;
+	rotated.m[2][2] = 3.573f;
+
+	mat3x3 r;
+	r.m[0][1] = -1;
+	mat3x3::ScaleAlongAxis(r, 5, vec3(0.267f, -0.535f, 0.802f));
+
+	ASSERT_EQ(mat3x3::RoundToInt(r), mat3x3::RoundToInt(rotated)) << r;
 
 }

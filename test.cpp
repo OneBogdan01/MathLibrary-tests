@@ -127,7 +127,6 @@ TEST(LinearAlgebra, 3DUniformScaling)
 }
 TEST(LinearAlgebra, 3DScalingAroundAxis)
 {
-	mat3x3 currentR;
 	mat3x3 rotated;
 	rotated.m[0][0] = 1.285f;
 	rotated.m[0][1] = -0.571f;
@@ -146,5 +145,49 @@ TEST(LinearAlgebra, 3DScalingAroundAxis)
 	mat3x3::ScaleAlongAxis(r, 5, vec3(0.267f, -0.535f, 0.802f));
 
 	ASSERT_EQ(mat3x3::RoundToInt(r), mat3x3::RoundToInt(rotated)) << r;
+
+}
+TEST(LinearAlgebra, 3DOrthographicProjection)
+{
+	mat3x3 projected;
+	projected.m[0][0] = 0.929f;
+	projected.m[0][1] = 0.143f;
+	projected.m[0][2] = -0.214f;
+
+	projected.m[1][0] = 0.143f;
+	projected.m[1][1] = 0.714f;
+	projected.m[1][2] = 0.429f;
+
+	projected.m[2][0] = -0.214f;
+	projected.m[2][1] = 0.429f;
+	projected.m[2][2] = 0.357f;
+
+	mat3x3 r;
+	r.m[0][1] = -1;
+	mat3x3::OrthographicProjection(r, vec3(0.267f, -0.535f, 0.802f));
+
+	ASSERT_EQ(mat3x3::RoundToInt(r), mat3x3::RoundToInt(projected)) << r;
+
+}
+TEST(LinearAlgebra, 3DReflection)
+{
+	mat3x3 projected;
+	projected.m[0][0] = 0.857f;
+	projected.m[0][1] = 0.286f;
+	projected.m[0][2] = -0.428f;
+
+	projected.m[1][0] = 0.286f;
+	projected.m[1][1] = 0.428f;
+	projected.m[1][2] = 0.858f;
+
+	projected.m[2][0] = -0.428f;
+	projected.m[2][1] = 0.858f;
+	projected.m[2][2] = -0.286f;
+
+	mat3x3 r;
+	r.m[0][1] = -1;
+	mat3x3::Reflection(r, vec3(0.267f, -0.535f, 0.802f));
+
+	ASSERT_EQ(mat3x3::RoundToInt(r), mat3x3::RoundToInt(projected)) << r;
 
 }

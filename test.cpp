@@ -16,7 +16,8 @@ TEST(LinearAlgebra, localToWorld)
 	//upright axis
 	vec3 x{ .866f,0,-.5f }, y{ 0,1,0 }, z{ 0.5f,0,.866f };
 	World world{ x,y,z };
-	vec3 w = world.ToGlobalSpace(vec3(0, 5, 10.0f)) + robo.getPosition();
+	vec3 w = world.ToGlobalSpace(vec3(0, 5, 10.0f));
+	w = w + robo.getPosition();
 	ASSERT_EQ(vec3(6, 15, 11.66f), w) << " wrong because:" << w.x << " " << w.y << " " << w.z << "\n";
 	vec3 pos = { 0,0,0 };
 	vec3 o = robo.ToObjectSpace(pos, world);
@@ -189,5 +190,53 @@ TEST(LinearAlgebra, 3DReflection)
 	mat3x3::Reflection(r, vec3(0.267f, -0.535f, 0.802f));
 
 	ASSERT_EQ(mat3x3::RoundToInt(r), mat3x3::RoundToInt(projected)) << r;
+
+}
+TEST(LinearAlgebra, 3DMultipleAffineTransformations)
+{
+	mat3x3 rotate30;
+	mat3x3 rotate20;
+	mat3x3 rotated;
+	mat3x3 rotated2;
+	float angleToRotate = PI / 6;
+	rotated.m[0][0] = 0.866f;
+	rotated.m[0][1] = -0.187f;
+	rotated.m[0][2] = -0.464f;
+
+	rotated.m[1][0] = 0;
+	rotated.m[1][1] = 0.927f;
+	rotated.m[1][2] = -0.375;
+
+	rotated.m[2][0] = 0.5f;
+	rotated.m[2][1] = 0.324f;
+	rotated.m[2][2] = 0.803f;
+
+	rotated2.m[0][0] = 0.866f;
+	rotated2.m[0][1] = 0;
+	rotated2.m[0][2] = 0.5f;
+
+	rotated2.m[1][0] = -0.187f;
+	rotated2.m[1][1] = 0.927f;
+	rotated2.m[1][2] = 0.324f;
+
+	rotated2.m[2][0] = -0.464f;
+	rotated2.m[2][1] = -0.375f;
+	rotated2.m[2][2] = 0.803f;
+	//rotate 30 degress in object space then -22 in world
+	mat3x3::Rotate3D(angleToRotate, vec3(0, 1, 0), rotate30);
+	angleToRotate = -22 * PI / 180;
+	mat3x3::Rotate3D(angleToRotate, vec3(1, 0, 0), rotate20);
+
+	mat3x3 r = rotate30 * rotate20;
+	ASSERT_EQ(mat3x3::RoundToInt(r), mat3x3::RoundToInt(rotated)) << r;
+	//world to object
+	angleToRotate = 22 * PI / 180;
+
+	mat3x3::Rotate3D(angleToRotate, vec3(1, 0, 0), rotate20);
+	angleToRotate = -PI / 6;
+	mat3x3::Rotate3D(angleToRotate, vec3(0, 1, 0), rotate30);
+	r = rotate20 * rotate30;
+
+	ASSERT_EQ(mat3x3::RoundToInt(r), mat3x3::RoundToInt(rotated2)) << r;
 
 }

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Transform.hpp"
 #include "World.hpp"
+
 TEST(LinearAlgebra, vec2d)
 {
 	vec2 a{ 0,0 };
@@ -239,4 +240,80 @@ TEST(LinearAlgebra, 3DMultipleAffineTransformations)
 
 	ASSERT_EQ(mat3x3::RoundToInt(r), mat3x3::RoundToInt(rotated2)) << r;
 
+}
+TEST(LinearAlgebra, 2DDeterminant)
+{
+	mat2x2 r;
+
+	r.m[0][0] = 3;
+	r.m[0][1] = -2;
+
+	r.m[1][0] = 1;
+	r.m[1][1] = 4;
+
+	ASSERT_EQ(mat2x2::det(r), 14) << r;
+
+}
+TEST(LinearAlgebra, 3DetAdjInv)
+{
+	mat3x3 r;
+
+	r.m[0][0] = 3;
+	r.m[0][1] = -2;
+
+	r.m[1][0] = 1;
+	r.m[1][1] = 4;
+	r.m[2][2] = 2;
+
+	mat3x3 adj;
+
+	adj.m[0][0] = 8;
+	adj.m[0][1] = 4;
+
+	adj.m[1][0] = -2;
+	adj.m[1][1] = 6;
+	adj.m[2][2] = 14;
+
+
+
+	const float det = mat3x3::det(r);
+	ASSERT_EQ(det, 28) << r;
+	mat3x3 adjointedR = mat3x3::adj(r);
+	ASSERT_EQ(adjointedR, adj) << adjointedR;
+	//inverse
+	mat3x3 inv;
+	inv.m[0][0] = 2.0f / 7;
+	inv.m[0][1] = 1.0f / 7;
+
+	inv.m[1][0] = -1.0f / 14;
+	inv.m[1][1] = 3.0f / 14;
+	inv.m[2][2] = 1.0f / 2;
+	ASSERT_EQ(adjointedR / det, inv) << adjointedR / det;
+}
+TEST(LinearAlgebra, 3DOrthogonal)
+{
+	mat3x3 r;
+
+	r.m[0][0] = -0.1495f;
+	r.m[0][1] = -0.1986f;
+	r.m[0][2] = -0.9685f;
+
+	r.m[1][0] = -0.8256f;
+	r.m[1][1] = 0.5640f;
+	r.m[1][2] = 0.0117f;
+
+	r.m[2][0] = 0.5439f;
+	r.m[2][1] = 0.8015f;
+	r.m[2][2] = 0.2484f;
+
+	mat3x3 inverse = mat3x3::inv(r);
+	mat3x3::transpose(r);
+
+	double tolerance = 1e-6; // Set an appropriate tolerance value
+
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			ASSERT_NEAR(r.m[i][j], inverse.m[i][j], tolerance) << "Mismatch at index (" << i << ", " << j << ")";
+		}
+	}
 }

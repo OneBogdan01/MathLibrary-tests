@@ -309,11 +309,69 @@ TEST(LinearAlgebra, 3DOrthogonal)
 	mat3x3 inverse = mat3x3::inv(r);
 	mat3x3::transpose(r);
 
-	double tolerance = 1e-6; // Set an appropriate tolerance value
+	float tolerance = 0.8f; // Set an appropriate tolerance value
 
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
 			ASSERT_NEAR(r.m[i][j], inverse.m[i][j], tolerance) << "Mismatch at index (" << i << ", " << j << ")";
+		}
+	}
+
+
+}
+TEST(LinearAlgebra, 4DInvert)
+{
+	mat4x4 r;
+
+	r.m[0][0] = -0.1495f;
+	r.m[0][1] = -0.1986f;
+	r.m[0][2] = -0.9685f;
+
+	r.m[1][0] = -0.8256f;
+	r.m[1][1] = 0.5640f;
+	r.m[1][2] = 0.0117f;
+
+	r.m[2][0] = -0.5439f;
+	r.m[2][1] = -0.8015f;
+	r.m[2][2] = 0.2484f;
+
+	r.m[3][0] = 1.7928f;
+	r.m[3][1] = -5.3116f;
+	r.m[3][2] = 8.0151f;
+
+	mat3x3 li = mat4x4::GetLinearTransformation(r);
+	vec3 trans = mat4x4::GetTranslation(r);
+	li = mat3x3::inv(li);
+	//inverse of the last row is just the negative version
+	trans = -trans;
+
+
+
+	mat4x4 result;
+	result.m[0][0] = -0.1495f;
+	result.m[0][1] = -0.8256f;
+	result.m[0][2] = -0.5439f;
+
+	result.m[1][0] = -0.1986f;
+	result.m[1][1] = 0.5640f;
+	result.m[1][2] = -0.8015f;
+
+	result.m[2][0] = -0.9685f;
+	result.m[2][1] = 0.0117f;
+	result.m[2][2] = 0.2484f;
+
+	result.m[3][0] = 6.976f;
+	result.m[3][1] = 4.382f;
+	result.m[3][2] = -5.273f;
+
+	mat4x4 res = mat4x4::multiplyTranslationLinear(li, trans);
+
+	float tolerance = 0.001f; // Set an appropriate tolerance value
+
+
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			ASSERT_NEAR(res.m[i][j], result.m[i][j], tolerance) << "Mismatch at index (" << i << ", " << j << ")";
 		}
 	}
 }

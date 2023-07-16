@@ -39,6 +39,28 @@ std::ostream& operator<<(std::ostream& os, mat3x3 const& m) {
 	}
 	return os;
 }
+std::ostream& operator<<(std::ostream& os, vec3 const& m) {
+	for (int i = 0; i < 3; i++)
+	{
+		os << m.cell[i];
+
+		os << "\n";
+	}
+	return os;
+}
+std::ostream& operator<<(std::ostream& os, mat4x4 const& m) {
+	for (int i = 0; i < 4; i++)
+	{
+		os << "\n";
+
+		for (int j = 0; j < 4; j++)
+		{
+			os << m.m[i][j] << " ";
+		}
+		os << "\n";
+	}
+	return os;
+}
 //displays to cout the insides of 3x3 matrix
 std::ostream& operator<<(std::ostream& os, mat2x2 const& m) {
 	for (int i = 0; i < 2; i++)
@@ -345,8 +367,6 @@ TEST(LinearAlgebra, 4DInvert)
 	//inverse of the last row is just the negative version
 	trans = -trans;
 
-
-
 	mat4x4 result;
 	result.m[0][0] = -0.1495f;
 	result.m[0][1] = -0.8256f;
@@ -368,10 +388,70 @@ TEST(LinearAlgebra, 4DInvert)
 
 	float tolerance = 0.001f; // Set an appropriate tolerance value
 
-
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
 			ASSERT_NEAR(res.m[i][j], result.m[i][j], tolerance) << "Mismatch at index (" << i << ", " << j << ")";
 		}
 	}
+}
+TEST(LinearAlgebra, 4DTranslation)
+{
+	mat4x4 r;
+
+	r.m[1][1] = 0.94f;
+	r.m[1][2] = 0.342f;
+
+	r.m[2][1] = -0.342f;
+	r.m[2][2] = 0.94f;
+
+	r.m[3][0] = 4;
+	r.m[3][1] = 2;
+	r.m[3][2] = 3;
+	mat4x4 r2;
+
+	r2.m[1][1] = 0.94f;
+	r2.m[1][2] = 0.342f;
+
+	r2.m[2][1] = -0.342f;
+	r2.m[2][2] = 0.94f;
+
+	r2.m[3][0] = 4;
+	r2.m[3][1] = .853f;
+	r2.m[3][2] = 3.503f;
+
+	vec3 trans(4, 2, 3);
+
+	const float angle = 20 * PI / 180;
+	mat3x3 rot;
+	mat3x3::Rotate3D(angle, vec3(1, 0, 0), rot);
+	mat4x4 m = mat4x4::constructLinearTransformation(rot, trans);
+
+	float tolerance = 0.001f; // Set an appropriate tolerance value
+
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			ASSERT_NEAR(m.m[i][j], r.m[i][j], tolerance) << "Mismatch at index (" << i << ", " << j << ")";
+		}
+	}
+	m = mat4x4::multiplyTranslationLinear(rot, trans);
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			ASSERT_NEAR(m.m[i][j], r2.m[i][j], tolerance) << "Mismatch at index (" << i << ", " << j << ")";
+		}
+	}
+}
+TEST(LinearAlgebra, PerspectiveProjection)
+{
+	mat4x4 r = mat4x4::PerspectiveProjection(vec3(1, 0, 0), 5);
+	mat4x4 result;
+	result.m[0][3] = 1.0f / 5;
+	result.m[3][3] = 0;
+	vec3 w = vec3(105, -243, 89);
+
+	ASSERT_EQ(r, result) << r;
+	w = mat4x4::PerspectiveProjectionToVec3(r, w);
+
+	ASSERT_EQ(w, vec3(5, -81.0f / 7, 89.0f / 21)) << w;
+
+
 }

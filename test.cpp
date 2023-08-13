@@ -625,7 +625,7 @@ TEST(LinearAlgebra, CartesianToSphericalLeftHanded)
 
 		spco3 s(testData[i]);
 
-		std::cout << s << "\n";
+		//std::cout << s << "\n";
 
 		float r = sqrt(testData[i].x * testData[i].x + testData[i].y * testData[i].y + testData[i].z * testData[i].z);
 		float h = atan2(testData[i].x, testData[i].z);

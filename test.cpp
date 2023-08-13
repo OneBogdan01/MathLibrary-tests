@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Transform.hpp"
-#include "World.hpp"
 
 //displays to cout the insides of 3x3 matrix
 std::ostream& operator<<(std::ostream& os, mat3x3 const& m) {

@@ -2,6 +2,91 @@
 #include "Transform.hpp"
 #include "World.hpp"
 
+//displays to cout the insides of 3x3 matrix
+std::ostream& operator<<(std::ostream& os, mat3x3 const& m) {
+	for (int i = 0; i < 3; i++)
+	{
+		os << "\n";
+
+		for (int j = 0; j < 3; j++)
+		{
+			os << m.m[i][j] << " ";
+		}
+		os << "\n";
+	}
+	return os;
+}
+std::ostream& operator<<(std::ostream& os, vec3 const& m) {
+	for (int i = 0; i < 3; i++)
+	{
+		os << m.cell[i];
+
+		os << " ";
+	}
+	os << "\n";
+
+	return os;
+}
+std::ostream& operator<<(std::ostream& os, vec2 const& m) {
+	for (int i = 0; i < 2; i++)
+	{
+		os << m.cell[i];
+
+		os << "\n";
+	}
+	return os;
+}
+std::ostream& operator<<(std::ostream& os, mat4x4 const& m) {
+	for (int i = 0; i < 4; i++)
+	{
+		os << "\n";
+
+		for (int j = 0; j < 4; j++)
+		{
+			os << m.m[i][j] << " ";
+		}
+		os << "\n";
+	}
+	return os;
+}
+//displays to cout the insides of 2x2 matrix
+std::ostream& operator<<(std::ostream& os, mat2x2 const& m) {
+	for (int i = 0; i < 2; i++)
+	{
+		os << "\n";
+
+		for (int j = 0; j < 2; j++)
+		{
+			os << m.m[i][j] << " ";
+		}
+		os << "\n";
+	}
+	return os;
+}
+std::ostream& operator<<(std::ostream& os, poco2 const& m) {
+
+
+	os << m.r << " " << m.a << " ";
+
+	os << "\n";
+
+	return os;
+}
+std::ostream& operator<<(std::ostream& os, spco3 const& m) {
+
+
+	os << m.r << " " << m.h << " " << m.p << " ";
+
+	os << "\n";
+
+	return os;
+}
+
+
+
+
+
+
 TEST(LinearAlgebra, vec2d)
 {
 	vec2 a{ 0,0 };
@@ -24,56 +109,6 @@ TEST(LinearAlgebra, localToWorld)
 	vec3 o = robo.ToObjectSpace(pos, world);
 	ASSERT_EQ(vec3(0.634f, -10.0f, -3.098f), o) << " wrong because:" << o.x << " " << o.y << " " << o.z << "\n";
 
-}
-//displays to cout the insides of 3x3 matrix
-std::ostream& operator<<(std::ostream& os, mat3x3 const& m) {
-	for (int i = 0; i < 3; i++)
-	{
-		os << "\n";
-
-		for (int j = 0; j < 3; j++)
-		{
-			os << m.m[i][j] << " ";
-		}
-		os << "\n";
-	}
-	return os;
-}
-std::ostream& operator<<(std::ostream& os, vec3 const& m) {
-	for (int i = 0; i < 3; i++)
-	{
-		os << m.cell[i];
-
-		os << "\n";
-	}
-	return os;
-}
-std::ostream& operator<<(std::ostream& os, mat4x4 const& m) {
-	for (int i = 0; i < 4; i++)
-	{
-		os << "\n";
-
-		for (int j = 0; j < 4; j++)
-		{
-			os << m.m[i][j] << " ";
-		}
-		os << "\n";
-	}
-	return os;
-}
-//displays to cout the insides of 3x3 matrix
-std::ostream& operator<<(std::ostream& os, mat2x2 const& m) {
-	for (int i = 0; i < 2; i++)
-	{
-		os << "\n";
-
-		for (int j = 0; j < 2; j++)
-		{
-			os << m.m[i][j] << " ";
-		}
-		os << "\n";
-	}
-	return os;
 }
 TEST(LinearAlgebra, matrices)
 {
@@ -452,6 +487,152 @@ TEST(LinearAlgebra, PerspectiveProjection)
 	w = mat4x4::PerspectiveProjectionToVec3(r, w);
 
 	ASSERT_EQ(w, vec3(5, -81.0f / 7, 89.0f / 21)) << w;
+}
+TEST(LinearAlgebra, PolarCanonicalForm)
+{
+	poco2 p(12.6f, 11.0f * PI / 4.0f);
+	ASSERT_EQ(p, poco2(12.6f, 3.0f * PI / 4.0f));
+}
+TEST(LinearAlgebra, PolarToCartesian)
+{
+	const float angle = 11.0f * PI / 4.0f;
+	const float radius = 12.6f;
+	poco2 p(radius, angle);
+	const vec2 v = poco2::ToCartesianForm(p);
+	const vec2 answer = vec2(p.r * cos(p.a), p.r * sin(p.a));
+	ASSERT_EQ(v, answer) << v;
+}
+TEST(LinearAlgebra, CartesianToPolar)
+{
+	const int testNumbers = 6;
+	const  vec2 testData[] = { {10,20},{-12,-5},{0,4.5f} ,{-3,4},{0,0},{-5280,0} };
+
+	for (int i = 0; i < testNumbers; i++)
+	{
+
+		poco2 p(testData[i]);
+
+		const float r = sqrt(testData[i].x * testData[i].x + testData[i].y * testData[i].y);
+		const float a = atan2(testData[i].y, testData[i].x);
+		poco2 answer(r, a);
+		ASSERT_EQ(p, answer);
+
+	}
+
+}
+TEST(LinearAlgebra, CylindricalToCartesian)
+{
+	const int testNumbers = 4;
+	const  cyco3 testData[] = { {4,120.0f * PI_OVER_180,5},{2,45.0f * PI_OVER_180,-1},{6,-PI / 6,-3} ,{3,3 * PI,1} };
+
+	for (int i = 0; i < testNumbers; i++)
+	{
+
+		cyco3 c(testData[i]);
+		poco2 justFirst2 = c.p;
+		vec3 p = poco2::ToCartesianForm(justFirst2);
+		p.z = c.z;
+		const float x = justFirst2.r * cosf(justFirst2.a);
+		const float y = justFirst2.r * sinf(justFirst2.a);
+		const float z = testData[i].z;
+		vec3 answer(x, y, z);
+		ASSERT_EQ(p, answer);
+
+	}
+
+}
+TEST(LinearAlgebra, CartesianToCylindrical)
+{
+	const int testNumbers = 4;
+	const  vec3 testData[] = { {1,1,1},{0,-5,2},{-3,4,-7} ,{0,0,-3} };
+
+	for (int i = 0; i < testNumbers; i++)
+	{
+
+		poco2 p(testData[i]);
+
+		const cyco3 c(p, testData[i].z);
+
+		const float r = sqrt(testData[i].x * testData[i].x + testData[i].y * testData[i].y);
+		const float a = atan2(testData[i].y, testData[i].x);
+		const float z = testData[i].z;
+		const cyco3 answer(r, a, z);
+		ASSERT_EQ(c, answer);
+
+	}
+
+}
+TEST(LinearAlgebra, SphericalToCartesian)
+{
+	const int testNumbers = 4;
+	const  spco3 testData[] = { {4,PI / 3,3 * PI / 4},{5,-5 * PI / 6,PI / 3},{2,-PI / 6,PI} ,{8,9 * PI / 4,PI / 6} };
+
+	for (int i = 0; i < testNumbers; i++)
+	{
+
+		spco3 s(testData[i]);
+
+		vec3 v = spco3::ToCartesianFormRightHanded(s);
+
+		const float x = s.po.r * sin(s.p) * cos(s.po.a);
+		const float y = s.po.r * sin(s.p) * sin(s.po.a);
+		const float z = s.po.r * cos(s.p);
+		const vec3 answer(x, y, z);
+		ASSERT_EQ(v, answer);
+
+	}
+
+}
+TEST(LinearAlgebra, SphericalLeftConventionTpCartesian)
+{
+	const int testNumbers = 4;
+	const  spco3 testData[] = { {4,PI / 3,3 * PI / 4},{5,-5 * PI / 6,PI / 3},{2,-PI / 6,PI} ,{8,9 * PI / 4,PI / 6} };
+
+	for (int i = 0; i < testNumbers; i++)
+	{
+
+		spco3 s(testData[i]);
+
+		vec3 v = spco3::ToCartesianForm(s);
+		//std::cout << s << "\n";
+
+		const float x = s.r * cos(s.p) * sin(s.h);
+		const float y = -s.r * sin(s.p);
+		const float z = s.r * cos(s.p) * cos(s.h);
+		const vec3 answer(x, y, z);
+		//std::cout << v << '\n';
+		ASSERT_EQ(v, answer);
+
+	}
+	spco3 s;
 
 
+}
+TEST(LinearAlgebra, CartesianToSphericalLeftHanded)
+{
+	const int testNumbers = 6;
+	const  vec3 testData[] = {
+		{sqrtf(2),2 * sqrtf(3),-sqrtf(2)},
+		{2 * sqrtf(3), 6,-4},
+		{-1,-1,-1} ,
+		{2,-2 * sqrtf(3),4} ,
+		{-sqrtf(3), -sqrtf(3),2 * sqrtf(2)},
+		{3, 4,12}
+	};
+
+	for (int i = 0; i < testNumbers; i++)
+	{
+
+		spco3 s(testData[i]);
+
+		std::cout << s << "\n";
+
+		float r = sqrt(testData[i].x * testData[i].x + testData[i].y * testData[i].y + testData[i].z * testData[i].z);
+		float h = atan2(testData[i].x, testData[i].z);
+		float p = asin(-testData[i].y / r);
+		const spco3 answer(r, h, p);
+		ASSERT_EQ(s, answer);
+
+	}
+	spco3 s;
 }

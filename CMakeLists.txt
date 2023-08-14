@@ -10,6 +10,12 @@ add_subdirectory( MathLibrary )
 #Enable testing
 enable_testing()
 
+#Fix windows 
+if(MSVC)
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+endif()
+
 include(FetchContent)
 include(GoogleTest)
 

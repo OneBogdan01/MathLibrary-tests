@@ -22,6 +22,11 @@ set(gtest_force_shared_crt ON)
 
 FetchContent_MakeAvailable(googletest)
 
+if(MSVC)
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+    set(BUILD_SHARED_LIBS TRUE)
+endif()
+
 set( INC_FILES
     pch.h
 )

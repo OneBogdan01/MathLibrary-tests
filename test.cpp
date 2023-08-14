@@ -83,9 +83,6 @@ std::ostream& operator<<(std::ostream& os, spco3 const& m) {
 
 
 
-
-
-
 TEST(LinearAlgebra, vec2d)
 {
 	vec2 a{ 0,0 };

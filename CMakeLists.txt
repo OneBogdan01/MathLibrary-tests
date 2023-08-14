@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.7)
 # Use solution folders.
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-project(MathLibrary VERSION 1.0 DESCRIPTION "My C++ Math library" LANGUAGES CXX)
+project(MathTests VERSION 1.0 DESCRIPTION "My C++ Math library" LANGUAGES CXX)
 
 #adding the library
 add_subdirectory( MathLibrary )
@@ -22,10 +22,6 @@ set(gtest_force_shared_crt ON)
 
 FetchContent_MakeAvailable(googletest)
 
-if(MSVC)
-    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-    set(BUILD_SHARED_LIBS TRUE)
-endif()
 
 set( INC_FILES
     pch.h
@@ -36,10 +32,10 @@ set( SRC_FILES
 	test.cpp
 )
 
-add_executable( math_tests ${INC_FILES} ${SRC_FILES} )
-target_link_libraries( math_tests PUBLIC gtest gtest_main )
-gtest_discover_tests( math_tests )
-target_link_libraries( math_tests PUBLIC MathLibrary )
+add_executable( MathTests ${INC_FILES} ${SRC_FILES} )
+target_link_libraries( MathTests PUBLIC gtest gtest_main )
+gtest_discover_tests( MathTests )
+target_link_libraries( MathTests PUBLIC MathLibrary )
 
 
 set_target_properties(

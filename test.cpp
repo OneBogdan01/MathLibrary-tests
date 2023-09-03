@@ -632,3 +632,20 @@ TEST(LinearAlgebra, CartesianToSphericalLeftHanded)
 	}
 	spco3 s;
 }
+TEST(LinearAlgebra, 3DRotationsConversionFromQuat)
+{
+	qua4 q;
+	q.w = -1;
+	mat3x3 m = RotationConversions::Qua4ToMat3x3(q);
+	ASSERT_EQ(m, mat3x3());
+	vec3 euler = RotationConversions::Qua4ToEulerAnglesToUpright(q);
+	ASSERT_EQ(euler, vec3());
+
+	q = qua4(0.653f, -0.653f, -0.271f, -0.271f);
+	euler = RotationConversions::Qua4ToEulerAnglesToUpright(q);
+	ASSERT_EQ(euler, vec3(-0.7853982f, -1.570796f, 0));
+
+	q = qua4(0.364f, -0.106f, 0.848f, -0.372f);
+	euler = RotationConversions::Qua4ToEulerAnglesToUpright(q);
+	ASSERT_EQ(euler, vec3(PI_OVER_180 * 123, PI_OVER_180 * 33.5f, PI_OVER_180 * -32.7f));
+}
